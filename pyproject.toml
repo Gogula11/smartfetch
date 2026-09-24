@@ -1,0 +1,22 @@
+[project]
+name = "smartfetch"
+version = "0.1.0"
+description = "Fastfetch-style system stats with local/cloud LLM health diagnosis"
+readme = "README.md"
+license = "MIT"
+authors = [
+    { name = "Sohan Gogula" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "psutil>=7.2.2",
+    "requests>=2.34.2",
+    "rich>=15.0.0",
+]
+
+[project.scripts]
+smartfetch = "smartfetch:main"
+
+[build-system]
+requires = ["uv_build>=0.12.13,<0.13.0"]
+build-backend = "uv_build"
