@@ -22,9 +22,12 @@ def render_stats(data_dict):
     ram_percent = data_dict["RAM%"]
     ram_used = data_dict["RAM Used"]
     ram_total = data_dict["RAM Total"]
-    vram_used = data_dict["VRAM Used"]
-    vram_total = data_dict["VRAM Total"]
-    gpu_name = data_dict["GPU"]
+    gpus = data_dict.get("GPUs")
+    if not gpus:
+        if data_dict.get("GPU") is not None:
+            gpus = [{"GPU": data_dict.get("GPU"), "VRAM Used": data_dict.get("VRAM Used"), "VRAM Total": data_dict.get("VRAM Total")}]
+        else:
+            gpus = []
     disk_percent = data_dict["Disk%"]
     disk_used = data_dict["Disk Used"]
     disk_total = data_dict["Disk Total"]
@@ -38,10 +41,13 @@ def render_stats(data_dict):
         lines.append(f"Load:  {cpu}% @ {curr_cpu_freq}GHz, boost {boost_cpu_freq}GHz")
     else:
         lines.append(f"Load:  {cpu}%")
-    if gpu_name is not None:
-        lines.append(f"GPU:   {gpu_name}")
-    if vram_used is not None or vram_total is not None:
-        lines.append(f"VRAM:  {vram_used} / {vram_total}GB")
+    for i, g in enumerate(gpus):
+        lines.append(f"GPU{i}:  {g.get('GPU')}")
+        vu, vt = g.get("VRAM Used"), g.get("VRAM Total")
+        if vu is not None or vt is not None:
+            lines.append(f"VRAM{i}: {vu} / {vt}GB")
+        else:
+            lines.append(f"VRAM{i}: shared")
     lines.append(f"RAM:   {ram_used} / {ram_total}GB ({ram_percent}%)")
     if disk_used is not None or disk_total is not None or disk_percent is not None:
         lines.append(f"Disk:  {disk_used} / {disk_total}GB ({disk_percent}%)")
@@ -72,6 +78,8 @@ if __name__ == "__main__":
     "CPU": "Intel i9", "CPU Arch": "x86_64", "CPU%": 12.5, "CPU Count": 20, "Curr_CPU_Freq": 0.74,
     "Boost_CPU_Freq": 4.48, "RAM Used": 6.4, "RAM Total": 16.0, "RAM%": 40.0,
     "GPU": "NVIDIA RTX 3070 Ti", "VRAM Used": 0.5, "VRAM Total": 8.0,
+    "GPUs": [{"GPU": "NVIDIA RTX 3070 Ti", "VRAM Used": 0.5, "VRAM Total": 8.0},
+             {"GPU": "AMD RX 7900 XTX", "VRAM Used": 1.0, "VRAM Total": 24.0}],
     "Disk Used": 100.0, "Disk Total": 250.0, "Disk%": 40.0, "Boot Time": "2026-09-15 21:27:24", "Battery %": 96.74}
     text = "The PC's specifications are generally considered average..."
     render_stats(data)
