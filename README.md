@@ -8,7 +8,7 @@ Snapshot → query → staged panels: stats print instantly, the AI verdict land
 
 Full run-through: default run (dual-GPU panels + AI verdict) → `--no-ai` stats only → `--json` raw dict.
 
-<video src="assets/demo.mp4" controls width="100%"></video>
+![demo](assets/demo.gif)
 
 ## Quickstart
 
