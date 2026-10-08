@@ -1,6 +1,6 @@
 [project]
 name = "smartfetch"
-version = "0.1.0"
+version = "1.0.0"
 description = "Fastfetch-style system stats with local/cloud LLM health diagnosis"
 readme = "README.md"
 license = "MIT"
